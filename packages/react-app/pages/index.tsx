@@ -6,22 +6,30 @@ import {
   usePrepareContractWrite,
   useContractWrite,
   useContractRead,
+  useBalance,
 } from "wagmi";
 
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import BuyMeACoffeeAbi from "../../hardhat/artifacts/contracts/BuyMeACoffee.sol/BuyMeACoffee.json";
+import useIsBalanceLoad from "./hooks/useIsBalanceLoad";
 
 const contractAddress = "0x42dF65f907BaD119d9CAa73405923bb64125f5F7";
 export default function Home() {
   const mounted = useIsMounted();
+  const balanceLoad = useIsBalanceLoad();
   const { address, isConnected } = useAccount();
   const [message, setMessage] = useState("");
   const [name, setName] = useState("");
   const [amount, setAmount] = useState(0);
   const [allMemo, setAllMemo]: any[] = useState([]);
 
+  const { data: balance } = useBalance({
+    address: contractAddress,
+    watch: false,
+  });
+
   //Buy Coffee
-  const { config, error } = usePrepareContractWrite({
+  const { config: BuyCoffeeConfig, error } = usePrepareContractWrite({
     address: contractAddress,
     abi: BuyMeACoffeeAbi.abi,
     functionName: "buyCoffee",
@@ -31,8 +39,20 @@ export default function Home() {
       value: ethers.utils.parseEther(amount.toString()),
     },
   });
-  const { data: buyMeACoffee, write } = useContractWrite(config);
+  const { data: buyMeACoffee, write } = useContractWrite(BuyCoffeeConfig);
 
+  //WITHDRAW tips
+
+  const { config: withdrawTipsConfig, error: withdrawTipsError } =
+    usePrepareContractWrite({
+      address: contractAddress,
+      abi: BuyMeACoffeeAbi.abi,
+      functionName: "withdrawTips",
+    });
+  const { data: withdrawTipsdata, write: withdrawTips } =
+    useContractWrite(withdrawTipsConfig);
+
+  //FETCH MEMO
   const { data: memos, isFetched } = useContractRead({
     address: contractAddress,
     abi: BuyMeACoffeeAbi.abi,
@@ -64,18 +84,15 @@ export default function Home() {
   const handleOnMessageChange = (event: any) => {
     const { value } = event.target;
     setMessage(value);
-    console.log("message is :", message);
   };
   const handleOnNameChange = (event: any) => {
     const { value } = event.target;
     setName(value);
-    console.log("name is :", name);
   };
 
   const handleOnAmountChange = (event: any) => {
     const { value } = event.target;
     setAmount(value.toString());
-    console.log("name is :", amount);
   };
   return (
     <div className="flex flex-col items-center justify-center w-full max-w-xs top-3 sticky z-20">
@@ -147,6 +164,18 @@ export default function Home() {
         </div>
       )}
       <div className="w-full">
+        {/* <div>
+          {balanceLoad ? <div>Total Tips {balance?.formatted}</div> : ""}
+
+          <button
+            type="button"
+            className="bg-indigo-600 text-center rounded text-white/90 font-bold py-2 px-4 focus:outline-none hover:bg-indigo-700 hover:text-white"
+            onClick={() => withdrawTips}
+          >
+            {" "}
+            Withdraw Tips
+          </button>
+        </div> */}
         {allMemo.map((memo: any, index: any) => {
           return (
             <div className="border-l-2 mt-10 flex flex-row" key={index}>
@@ -158,7 +187,7 @@ export default function Home() {
                 {/* <!-- Content that showing in the box --> */}
                 <div className="flex-auto">
                   <div className="bg-indigo-700 rounded p-2 font-bold">
-                    <h1 className="text-md">Supporter: {memo.name}</h1>
+                    <h1 className="text-md">From: {memo.name}</h1>
                     <h1 className="text-md">Message: {memo.message}</h1>
                     <h3>Address: {memo.address}</h3>
                   </div>
