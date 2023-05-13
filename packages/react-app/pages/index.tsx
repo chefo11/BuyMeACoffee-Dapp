@@ -7,6 +7,7 @@ import {
   useContractWrite,
   useContractRead,
 } from "wagmi";
+
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import BuyMeACoffeeAbi from "../../hardhat/artifacts/contracts/BuyMeACoffee.sol/BuyMeACoffee.json";
 
@@ -17,7 +18,7 @@ export default function Home() {
   const [message, setMessage] = useState("");
   const [name, setName] = useState("");
   const [amount, setAmount] = useState(0);
-  const [allMemo, setAllMemo] = useState([]);
+  const [allMemo, setAllMemo]: any[] = useState([]);
 
   //Buy Coffee
   const { config, error } = usePrepareContractWrite({
@@ -31,6 +32,33 @@ export default function Home() {
     },
   });
   const { data: buyMeACoffee, write } = useContractWrite(config);
+
+  const { data: memos, isFetched } = useContractRead({
+    address: contractAddress,
+    abi: BuyMeACoffeeAbi.abi,
+    functionName: "getMemos",
+    watch: true,
+  });
+
+  useEffect(() => {
+    try {
+      if (isFetched) {
+        const MemoCleaned = memos.map((memo: any) => {
+          return {
+            address: memo.from,
+            name: memo.name,
+            timestamp: new Date(memo.timestamp * 1000),
+            message: memo.message,
+          };
+        });
+
+        setAllMemo(MemoCleaned);
+        console.log("all memo", allMemo);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }, [memos, isFetched]);
 
   //handle input fields
   const handleOnMessageChange = (event: any) => {
@@ -50,7 +78,7 @@ export default function Home() {
     console.log("name is :", amount);
   };
   return (
-    <div className=" w-full max-w-xs top-3 sticky z-20">
+    <div className="flex flex-col items-center justify-center w-full max-w-xs top-3 sticky z-20">
       {mounted && isConnected ? (
         <form>
           <div className="mb-4">
@@ -118,6 +146,31 @@ export default function Home() {
           />
         </div>
       )}
+      <div className="w-full">
+        {allMemo.map((memo: any, index: any) => {
+          return (
+            <div className="border-l-2 mt-10 flex flex-row" key={index}>
+              <div className="transform transition cursor-pointer hover:-translate-y-2 ml-10 relative flex items-center px-6 py-4 bg-indigo-800 text-white rounded mb-10 flex-col md:flex-row space-y-4 md:space-y-0">
+                {/* <!-- Dot Following the Left Vertical Line --> */}
+                <div className="w-5 h-5 bg-blue-600 absolute -left-10 transform -translate-x-2/4 rounded-full z-10 mt-2 md:mt-0"></div>
+                {/* <!-- Line that connecting the box with the vertical line --> */}
+                <div className="w-10 h-1 bg-green-300 absolute -left-10 z-0"></div>
+                {/* <!-- Content that showing in the box --> */}
+                <div className="flex-auto">
+                  <div className="bg-indigo-700 rounded p-2 font-bold">
+                    <h1 className="text-md">Supporter: {memo.name}</h1>
+                    <h1 className="text-md">Message: {memo.message}</h1>
+                    <h3>Address: {memo.address}</h3>
+                  </div>
+                  <h1 className="text-md font-bold">
+                    TimeStamp: {memo.timestamp.toString()}
+                  </h1>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }
