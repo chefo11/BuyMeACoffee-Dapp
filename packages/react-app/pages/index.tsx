@@ -43,14 +43,14 @@ export default function Home() {
 
   //WITHDRAW tips
 
-  const { config: withdrawTipsConfig, error: withdrawTipsError } =
-    usePrepareContractWrite({
-      address: contractAddress,
-      abi: BuyMeACoffeeAbi.abi,
-      functionName: "withdrawTips",
-    });
-  const { data: withdrawTipsdata, write: withdrawTips } =
-    useContractWrite(withdrawTipsConfig);
+  // const { config: withdrawTipsConfig, error: withdrawTipsError } =
+  //   usePrepareContractWrite({
+  //     address: contractAddress,
+  //     abi: BuyMeACoffeeAbi.abi,
+  //     functionName: "withdrawTips",
+  //   });
+  // const { data: withdrawTipsdata, write: withdrawTips } =
+  //   useContractWrite(withdrawTipsConfig);
 
   //FETCH MEMO
   const { data: memos, isFetched } = useContractRead({
