@@ -23,20 +23,10 @@ export default function Header() {
               </div>
               <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                 <div className="flex flex-shrink-0 items-center">
-                  <Image
-                    className="block h-8 w-auto sm:block lg:block"
-                    src="/logo.svg"
-                    width="24"
-                    height="24"
-                    alt="Celo Logo"
-                  />
-                </div>
-                <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
-                  <a
-                    href="#"
-                    className="inline-flex items-center border-b-2 border-black px-1 pt-1 text-sm font-medium text-gray-900"
-                  >
-                    Home
+                  <a href="#" className="inline-flex items-center  px-1 pt-1">
+                    <div className="block h-8 w-auto sm:block lg:block text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">
+                      Chefo
+                    </div>
                   </a>
                 </div>
               </div>
