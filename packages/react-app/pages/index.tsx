@@ -78,7 +78,7 @@ export default function Home() {
     } catch (error) {
       console.log(error);
     }
-  }, [memos, isFetched]);
+  }, [memos, isFetched, allMemo]);
 
   //handle input fields
   const handleOnMessageChange = (event: any) => {
