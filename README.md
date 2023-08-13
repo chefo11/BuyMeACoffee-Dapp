@@ -1,4 +1,4 @@
-# BuyMeACoffee
+# [BuyMeACoffee](https://buy-me-a-coffee-dapp-react-app.vercel.app/)
 
 ![My Image](https://i.ibb.co/0cR4dCy/Screenshot-2023-07-29-135052.jpg)
 
@@ -7,6 +7,7 @@ The "Buy Me a Coffee" dapp facilitates a seamless and appreciative way for users
 
 ## Demo 
 Click [Here to visit the demo app](https://buy-me-a-coffee-dapp-react-app.vercel.app/)
+https://buy-me-a-coffee-dapp-react-app.vercel.app/
 ## Technologies Used
 1. Solidity
 1. Next.js
