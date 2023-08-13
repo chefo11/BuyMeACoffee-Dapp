@@ -10,7 +10,7 @@ import {
 } from "wagmi";
 
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import BuyMeACoffeeAbi from "../../hardhat/artifacts/contracts/BuyMeACoffee.sol/BuyMeACoffee.json";
+import BuyMeACoffeeAbi from "../abi/BuyMeACoffee.json";
 import useIsBalanceLoad from "../hooks/useIsBalanceLoad";
 
 const contractAddress = "0x42dF65f907BaD119d9CAa73405923bb64125f5F7";
