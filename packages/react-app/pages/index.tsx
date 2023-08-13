@@ -1,6 +1,6 @@
 import { ethers } from "ethers";
 import { useState, useEffect } from "react";
-import { useIsMounted } from "./hooks/useIsMounted";
+import { useIsMounted } from "../hooks/useIsMounted";
 import {
   useAccount,
   usePrepareContractWrite,
@@ -11,7 +11,7 @@ import {
 
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import BuyMeACoffeeAbi from "../../hardhat/artifacts/contracts/BuyMeACoffee.sol/BuyMeACoffee.json";
-import useIsBalanceLoad from "./hooks/useIsBalanceLoad";
+import useIsBalanceLoad from "../hooks/useIsBalanceLoad";
 
 const contractAddress = "0x42dF65f907BaD119d9CAa73405923bb64125f5F7";
 export default function Home() {
@@ -63,14 +63,19 @@ export default function Home() {
   useEffect(() => {
     try {
       if (isFetched) {
-        const MemoCleaned = memos.map((memo: any) => {
-          return {
-            address: memo.from,
-            name: memo.name,
-            timestamp: new Date(memo.timestamp * 1000),
-            message: memo.message,
-          };
-        });
+        const MemoCleaned = (memos as any[])?.map((memo: any) => ({
+          address: memo.from,
+          name: memo.name,
+          timestamp: new Date(memo.timestamp * 1000),
+          message: memo.message,
+        }));
+
+        // const MemoCleaned = (memos as any[])?.map((memo: any) => ({
+        //   address: memo.from,
+        //   name: memo.name,
+        //   timestamp: new Date(memo.timestamp * 1000),
+        //   message: memo.message,
+        // }));
 
         setAllMemo(MemoCleaned);
         console.log("all memo", allMemo);
