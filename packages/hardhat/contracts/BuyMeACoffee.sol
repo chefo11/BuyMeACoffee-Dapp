@@ -46,9 +46,7 @@ contract BuyMeACoffee {
     /**
      * @dev fetches all stored memos
      */
-    function getMemos() public view returns (Memo[] memory) {
-        return memos;
-    }
+   
 
     function getBalanceAccount() public view returns (uint256){
         return msg.sender.balance;
@@ -89,10 +87,10 @@ contract BuyMeACoffee {
 
     //here we are going to send the entire balance stored in this contract to the owner
     // recheck this function to make sure that it is working as intended
-     function withdrawTips() public payable onlyOwner {
+    function withdrawTips() public payable onlyOwner {
     require(address(this).balance > 0, "No balance to withdraw");
 
-    address payable ownerAddress = payable(owner());
+    address payable ownerAddress = payable(owner);
     require(ownerAddress != address(0), "Invalid owner address");
 
     ownerAddress.transfer(address(this).balance);
