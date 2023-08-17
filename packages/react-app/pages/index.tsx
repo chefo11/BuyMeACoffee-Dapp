@@ -84,20 +84,41 @@ export default function Home() {
       console.log(error);
     }
   }, [memos, isFetched, allMemo]);
-
+  const DisableButton = () => {
+    if (message && amount && name) {
+      return false;
+    }
+    return true;
+  };
   //handle input fields
   const handleOnMessageChange = (event: any) => {
-    const { value } = event.target;
-    setMessage(value);
+    if (event.target) {
+      const { value } = event.target;
+      setMessage(value);
+    }
   };
   const handleOnNameChange = (event: any) => {
     const { value } = event.target;
     setName(value);
   };
 
+  let tempAmount: any;
   const handleOnAmountChange = (event: any) => {
     const { value } = event.target;
-    setAmount(value.toString());
+    tempAmount = value.toString();
+    if (!tempAmount) {
+      return;
+    } else {
+      setAmount(tempAmount);
+    }
+  };
+
+  const handleOnSubmit = () => {
+    setAmount(tempAmount);
+    write?.();
+    setName("");
+    setMessage("");
+    setAmount(1);
   };
   return (
     <div className="flex flex-col items-center justify-center w-full max-w-xs top-3 sticky z-20">
@@ -129,6 +150,7 @@ export default function Home() {
             <input
               id="amount"
               type="number"
+              required
               placeholder="Please Enter Amount"
               className="appearance-none border rounded shadow w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none"
               onChange={handleOnAmountChange}
@@ -154,7 +176,8 @@ export default function Home() {
             {" "}
             <button
               type="button"
-              onClick={() => write?.()}
+              onClick={handleOnSubmit}
+              disabled={DisableButton()}
               className="bg-indigo-600 text-center rounded text-white/90 font-bold py-2 px-4 focus:outline-none hover:bg-indigo-700 hover:text-white"
             >
               Send {amount > 0 ? amount : ""} Celo
