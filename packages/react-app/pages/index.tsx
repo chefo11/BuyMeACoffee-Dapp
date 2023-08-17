@@ -151,6 +151,7 @@ export default function Home() {
             <input
               id="amount"
               type="number"
+              value={amount}
               required
               placeholder="Please Enter Amount"
               className="appearance-none border rounded shadow w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none"
