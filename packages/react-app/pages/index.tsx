@@ -118,7 +118,7 @@ export default function Home() {
     write?.();
     setName("");
     setMessage("");
-    setAmount(1);
+    setAmount(0);
   };
   return (
     <div className="flex flex-col items-center justify-center w-full max-w-xs top-3 sticky z-20">
@@ -134,6 +134,7 @@ export default function Home() {
             <input
               id="name"
               type="text"
+              value={name}
               placeholder="Please Enter your Name"
               required
               className="appearance-none border rounded shadow w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none"
@@ -166,6 +167,7 @@ export default function Home() {
             <textarea
               id="memo"
               rows={3}
+              value={message}
               placeholder="Write a memo"
               required
               className="form-textarea mt-1 block w-full shadow appearance-none py-2 px-3 rounded border text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
